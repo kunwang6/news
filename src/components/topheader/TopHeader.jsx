@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import { Layout ,Dropdown,Menu,Avatar} from 'antd';
-import { DownOutlined,UserOutlined  } from '@ant-design/icons';
+import { UserOutlined  } from '@ant-design/icons';
 
 import {
     MenuUnfoldOutlined,

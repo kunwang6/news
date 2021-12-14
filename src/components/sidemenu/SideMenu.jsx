@@ -1,80 +1,73 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { Layout, Menu } from 'antd';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 import {
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    MailOutlined
+  
+   
   } from '@ant-design/icons';
 import './index.css'
 const {  Sider,} = Layout;
 const { SubMenu } = Menu;
 
-const menuList = [
-  {
-    key:'/home',
-    title:'首页',
-    icon:<UserOutlined />
-  },
-  {
-    key:'/user',
-    title:'用户管理',
-    icon:<UserOutlined />,
-    children:[
-        {key:'/user/list',
-        title:'用户列表',
-        icon:<UserOutlined />}
-    ]
-  },
-  {
-    key:'/role',
-    title:'权限管理',
-    icon:<UserOutlined />,
-    children:[
-        {key:'/role/list',
-        title:'角色列表',
-        icon:<UserOutlined />},
-        {key:'/right/list',
-        title:'权限列表',
-        icon:<UserOutlined />}
-    ]
+
+ function SideMenu(props) {
+   const [menu, setMenu] = useState([])
+  useEffect(()=>{
+    axios.get('http://localhost:5000/rights?_embed=children').then(res=>{
+      console.log(res.data);
+      setMenu(res.data)
+    })
+  },[])
+
+ const checkpage = (item)=>{
+      return item.pagepermisson === 1
   }
-]
-    
 
-
-
-
-export default function SideMenu() {
-const  renderMenu=(menuList)=>{
+  const  renderMenu=(menuList)=>{
     return menuList.map(item=>{
-      if(item.children){
-        return <SubMenu  key={item.key} icon={item.icon} title={item.title}></SubMenu>
+      if(item.children?.length>0&&checkpage(item)){
+        return <SubMenu  key={item.key} icon={item.icon} title={item.title} 
+        
+        onTitleClick={()=>{
+         if(item.id===1){
+          props.history.push(item.key)
+         }
+         return 
+        }} >
+          {renderMenu(item.children)}
+        </SubMenu>
       }
-      return <Menu.Item key={item.key} icon={item.icon} >{item.title}</Menu.Item>
+      return checkpage(item)&& <Menu.Item key={item.key} icon={item.icon} onClick={()=>{
+        props.history.push(item.key)
+      }} >{item.title}</Menu.Item>
     })
   }
+  const openKeys = ['/'+props.location.pathname.split('/')[1]]
     return (
         <Sider trigger={null} collapsible collapsed={false}> 
-          <div className="logo" >新闻发布管理系统会</div>
-           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-            {/* <Menu.Item key="1" icon={<UserOutlined />}>
-              首页
-            </Menu.Item>
-            <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-              nav 2
-            </Menu.Item>
-            <Menu.Item key="3" icon={<UploadOutlined />}>
-              nav 3
-            </Menu.Item>
-            <SubMenu key="sub1" icon={<MailOutlined />} title="用户管理">
-                <Menu.Item key="5">Option 3</Menu.Item>
-                <Menu.Item key="6">Option 4</Menu.Item>
-            </SubMenu> */}
-                {renderMenu(menuList)}
-          </Menu> 
-
-      
+          <div style={{display:'flex',height:'100%',flexDirection:'column'}}>
+            <div className="logo" >新闻发布管理系统会</div>
+            <div style={{flex:'1',overflow:'auto'}}>
+              <Menu theme="dark" mode="inline" defaultOpenKeys={openKeys} defaultSelectedKeys={[props.location.pathname]}>
+                {/* <Menu.Item key="1" icon={<UserOutlined />}>
+                  首页
+                </Menu.Item>
+                <Menu.Item key="2" icon={<VideoCameraOutlined />}>
+                  nav 2
+                </Menu.Item>
+                <Menu.Item key="3" icon={<UploadOutlined />}>
+                  nav 3
+                </Menu.Item>
+                <SubMenu key="sub1" icon={<MailOutlined />} title="用户管理">
+                    <Menu.Item key="5">Option 3</Menu.Item>
+                    <Menu.Item key="6">Option 4</Menu.Item>
+                </SubMenu> */}
+                    {renderMenu(menu)}
+              </Menu> 
+            </div>
+          </div>
         </Sider>
     )
 }
+export default withRouter(SideMenu)

@@ -30,13 +30,14 @@ export default function NewsSandBox() {
                     margin: '24px 16px',
                     padding: 24,
                     minHeight: 280,
+                    overflow:'auto'
                     }}
                 >
                     <Switch>
                         <Route path='/home' component={Home}></Route>
-                        <Route path='/user/list' component={UserList}></Route>
-                        <Route path='/role/list' component={RoleList}></Route>
-                        <Route path='/right/list' component={RightList}></Route>
+                        <Route path='/user-manage/list' component={UserList}></Route>
+                        <Route path='/right-manage/role/list' component={RoleList}></Route>
+                        <Route path='/right-manage/right/list' component={RightList}></Route>
                         <Redirect from='/' exact to='/home' ></Redirect>
                         <Route path='*' component={NoPermission}></Route>
                     </Switch>
