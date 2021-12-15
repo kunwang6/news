@@ -101,10 +101,8 @@
         "/audit-manage",
         "/audit-manage/audit",
         "/audit-manage/list",
-        "/publish-manage",
         "/publish-manage/unpublished",
         "/publish-manage/published",
-        "/publish-manage/sunset",
         "/home"
       ]
     },
@@ -323,7 +321,7 @@
       "id": 1,
       "title": "首页",
       "key": "/home",
-      "pagepermisson": 0,
+      "pagepermisson": 1,
       "grade": 1
     },
     {
