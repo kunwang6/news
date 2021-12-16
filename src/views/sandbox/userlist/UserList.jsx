@@ -72,30 +72,41 @@ export default function UserList() {
             icon: <ExclamationCircleOutlined />,
             onOk() {
               // console.log('OK');
-              // deleteMethod(item)
+               deleteMethod(item)
             },
             onCancel() {
               // console.log('Cancel');
             },
           })
-     }
+    }
+    const deleteMethod = (item) => {
+        setDataSource(dataSource.filter((date) => date.id !== item.id))
+        axios.delete(`http://localhost:5000/users/${item.id}`)
+    }
      // 删除权限
-     const addformok = () => {
+     const addFormOK = () => {
         addForm.current.validateFields().then((value) => {
             // console.log(value)
+
             setisVisible(false)
-            // 先post到后端生成id
+
+            addForm.current.resetFields()
+            // post到后端，生成id，再设置 datasource, 方便后面的删除和更新
             axios.post('http://localhost:5000/users', {
                 ...value,
                 roleState: true,
-                default: true,
+                default: false,
             }).then((res) => {
-                console.log(res)
+                console.log(res.data)
+                setDataSource([...dataSource, {
+                    ...res.data,
+                    role: roleList.filter((item) => item.id === value.roleId)[0],
+                }])
             })
-        }).catch((error) => {
-            console.log(error)
+        }).catch((err) => {
+            console.log(err)
         })
-     }
+    }
 
     return (
         <div>
@@ -109,7 +120,7 @@ export default function UserList() {
                 onCancel={() => {
                     setisVisible(false)
                 }}
-                onOk={() => addformok()}
+                onOk={() => addFormOK()}
                 >
                 <UserForm regionList={regionList} roleList={roleList} ref={addForm} />
                 </Modal>

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd'
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
-
+import { connect } from 'react-redux'
 import './index.css'
 
 const { Sider } = Layout
@@ -20,7 +19,7 @@ function SideMenu(props) {
   }, [])
 
   const checkpage = (item) => item.pagepermisson === 1
-  const { history, location } = props
+  const { history, location, isCollapsed } = props
 
   const renderMenu = (menuList) => menuList.map((item) => {
     if (item.children?.length > 0 && checkpage(item)) {
@@ -55,7 +54,7 @@ function SideMenu(props) {
   })
   const openKeys = [`/${location.pathname.split('/')[1]}`]
   return (
-    <Sider trigger={null} collapsible collapsed={false}>
+    <Sider trigger={null} collapsible collapsed={isCollapsed}>
       <div style={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
         <div className="logo">新闻发布管理系统会</div>
         <div style={{ flex: '1', overflow: 'auto' }}>
@@ -80,4 +79,5 @@ function SideMenu(props) {
     </Sider>
   )
 }
-export default withRouter(SideMenu)
+const mapStateToProps = ({ CollapsedReduser: { isCollapsed } }) => ({ isCollapsed })
+export default connect(mapStateToProps)(withRouter(SideMenu))
