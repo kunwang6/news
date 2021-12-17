@@ -61,7 +61,6 @@ export default function RightList() {
     const switchmethod = (item) => {
         const a = item
         a.pagepermisson = item.pagepermisson === 1 ? 0 : 1
-        console.log(item)
         setDataSource([...dataSource])
         if (item.grade === 1) {
             axios.patch(`http://localhost:5000/rights/${item.id}`, {

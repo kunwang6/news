@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd'
-
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -56,7 +55,7 @@ function SideMenu(props) {
   return (
     <Sider trigger={null} collapsible collapsed={isCollapsed}>
       <div style={{ display: 'flex', height: '100%', flexDirection: 'column' }}>
-        <div className="logo">新闻发布管理系统会</div>
+        <div className="logo">新闻发布管理系统</div>
         <div style={{ flex: '1', overflow: 'auto' }}>
           <Menu theme="dark" mode="inline" defaultOpenKeys={openKeys} defaultSelectedKeys={[location.pathname]}>
             {/* <Menu.Item key="1" icon={<UserOutlined />}>

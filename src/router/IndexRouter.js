@@ -12,12 +12,7 @@ export default function IndexRouter() {
             <Route path="/login" component={Login} />
             {/* <Route path='/' component={NewsSandBox}></Route> */}
             {/* 可以写三目运算符 */}
-            <Route
-                path="/"
-                render={() => (localStorage.getItem('token')
-                ? <NewsSandBox />
-                : <Redirect to="/login" />)}
-            />
+            <Route path="/" render={() => (localStorage.getItem('token') ? <NewsSandBox /> : <Redirect to="/login" />)} />
             </Switch>
         </HashRouter>
     )
